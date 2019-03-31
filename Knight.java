@@ -54,6 +54,7 @@ public class Knight extends Piece{
          else if(p[x+1][y+2].color!=color)
             ret.add(new Location(x+2, y+1));
       }
+      
       return ret;
    }
    public JLabel getIcon(){

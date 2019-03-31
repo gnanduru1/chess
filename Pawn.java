@@ -1,7 +1,7 @@
 import javax.swing.JLabel;
 import java.util.ArrayList;
 public class Pawn extends Piece{
-   public Pawn(int a, int b, char c){
+   public Pawn(int a, int b, char c){   
       super(a,b,c);
    }
    public ArrayList<Location> moves(Piece[][] p){

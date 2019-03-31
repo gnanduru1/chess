@@ -5,8 +5,40 @@ public class Bishop extends Piece{
       super(a,b,c);
    }
    public ArrayList<Location> moves(Piece[][] p){
-      
-      return null;
+      ArrayList<Location> ret = new ArrayList<Location>();
+      for(int i=1;i<8;i++){
+         if(x+i>7||y+i>7)
+            break;
+         if(p[x+i][y+i]==null)
+            ret.add(new Location(x+i,y+i));
+         else if(p[x+i][y+i].color!=color)
+            ret.add(new Location(x+i,y+i));
+      } 
+      for(int i=1;i<8;i++){
+         if(x+i>7||y-i<0)
+            break;
+         if(p[x+i][y-i]==null)
+            ret.add(new Location(x+i,y-i));
+         else if(p[x+i][y-i].color!=color)
+            ret.add(new Location(x+i,y-i));
+      }
+      for(int i=1;i<8;i++){
+         if(x-i<0||y-i<0)
+            break;
+         if(p[x-i][y-i]==null)
+            ret.add(new Location(x-i,y-i));
+         else if(p[x-i][y-i].color!=color)
+            ret.add(new Location(x-i,y-i));
+      }
+      for(int i=1;i<8;i++){
+         if(x-i<0||y+i>7)
+            break;
+         if(p[x-i][y+i]==null)
+            ret.add(new Location(x-i,y+i));
+         else if(p[x-i][y+i].color!=color)
+            ret.add(new Location(x-i,y+i));
+      }    
+      return ret;
    }
    public JLabel getIcon(){
       if(color == 'W')

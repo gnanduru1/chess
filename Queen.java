@@ -5,8 +5,10 @@ public class Queen extends Piece{
       super(a,b,c);
    }
    public ArrayList<Location> moves(Piece[][] p){
-      
-      return null;
+      ArrayList<Location> ret = new ArrayList<Location>();
+      ret.addAll((new Bishop(x,y,color)).moves(p));
+      ret.addAll((new Rook(x,y,color)).moves(p));
+      return ret;
    }
    public JLabel getIcon(){
       if(color == 'W')

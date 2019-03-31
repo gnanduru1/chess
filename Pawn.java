@@ -19,6 +19,10 @@ public class Pawn extends Piece{
                   ret.add(new Location(x+1,y+1));
             }
          }
+         if(y==1){
+            if(p[x][y+1]==null&&p[x][y+2]==null)
+               ret.add(new Location(x, y+2));
+         }
          if(p[x][y+1]==null)
             ret.add(new Location(x, y+1));         
       }
@@ -34,6 +38,10 @@ public class Pawn extends Piece{
                if(p[x+1][y-1].color=='W')
                   ret.add(new Location(x+1, y-1));
             }
+         }
+         if(y==6){
+            if(p[x][y-1]==null&&p[x][y-2]==null)
+               ret.add(new Location(x, y-2));
          }
          if(p[x][y-1]==null)
             ret.add(new Location(x, y-1));        

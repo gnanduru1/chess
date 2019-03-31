@@ -6,7 +6,54 @@ public class Knight extends Piece{
    }
    public ArrayList<Location> moves(Piece[][] p){
       ArrayList<Location> ret = new ArrayList<Location>();
-      ret.add(new Location(1,1));
+      if(x>0&&y>1){
+         if(p[x-1][y-2]==null)
+            ret.add(new Location(x-1, y-2));
+         else if(p[x-1][y-2].color!=color)
+            ret.add(new Location(x-1, y-2));
+      }
+      if(x>0&&y<6){
+         if(p[x-1][y+2]==null)
+            ret.add(new Location(x-1, y+2));
+         else if(p[x-1][y+2].color!=color)
+            ret.add(new Location(x-1, y+2));
+      }
+      if(x>1&&y>0){
+         if(p[x-2][y-1]==null)
+            ret.add(new Location(x-2, y+2));
+         else if(p[x-2][y-1].color!=color)
+            ret.add(new Location(x-2, y+2));
+      }
+      if(x>1&&y<7){
+         if(p[x-2][y+1]==null)
+            ret.add(new Location(x-2, y+1));
+         else if(p[x-2][y+1].color!=color)
+            ret.add(new Location(x-2, y+1));
+      }
+      if(x<7&&y>1){
+         if(p[x+1][y-2]==null)
+            ret.add(new Location(x+1, y-2));
+         else if(p[x+1][y-2].color!=color)
+            ret.add(new Location(x+1, y-2));
+      }
+      if(x<7&&y<6){
+         if(p[x+1][y+2]==null)
+            ret.add(new Location(x+1, y+2));
+         else if(p[x+1][y+2].color!=color)
+            ret.add(new Location(x+1, y+2));
+      }
+      if(x<6&&y>0){
+         if(p[x+2][y-1]==null)
+            ret.add(new Location(x+2, y-1));
+         else if(p[x+2][y-1].color!=color)
+            ret.add(new Location(x+2, y-1));
+      }
+      if(x<6&&y<7){
+         if(p[x+2][y+1]==null)
+            ret.add(new Location(x+2, y+1));
+         else if(p[x+1][y+2].color!=color)
+            ret.add(new Location(x+2, y+1));
+      }
       return ret;
    }
    public JLabel getIcon(){

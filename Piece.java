@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import javax.swing.JLabel;
 public class Piece{
+   public String type(){
+      return "Arbitrary piece";
+   }
    public char color;
    public int x,y;
    public Piece(){

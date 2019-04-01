@@ -6,6 +6,8 @@ public class Bishop extends Piece{
    }
    public ArrayList<Location> moves(Piece[][] p){
       ArrayList<Location> ret = new ArrayList<Location>();
+      if (p == null)
+         return ret;
       for(int i=1;i<8;i++){
          if(x+i>7||y+i>7)
             break;
@@ -13,6 +15,8 @@ public class Bishop extends Piece{
             ret.add(new Location(x+i,y+i));
          else if(p[x+i][y+i].color!=color)
             ret.add(new Location(x+i,y+i));
+         else
+            break;
       } 
       for(int i=1;i<8;i++){
          if(x+i>7||y-i<0)
@@ -21,6 +25,8 @@ public class Bishop extends Piece{
             ret.add(new Location(x+i,y-i));
          else if(p[x+i][y-i].color!=color)
             ret.add(new Location(x+i,y-i));
+         else
+            break;
       }
       for(int i=1;i<8;i++){
          if(x-i<0||y-i<0)
@@ -29,6 +35,8 @@ public class Bishop extends Piece{
             ret.add(new Location(x-i,y-i));
          else if(p[x-i][y-i].color!=color)
             ret.add(new Location(x-i,y-i));
+         else
+            break;
       }
       for(int i=1;i<8;i++){
          if(x-i<0||y+i>7)
@@ -37,6 +45,8 @@ public class Bishop extends Piece{
             ret.add(new Location(x-i,y+i));
          else if(p[x-i][y+i].color!=color)
             ret.add(new Location(x-i,y+i));
+         else
+            break;
       }    
       return ret;
    }

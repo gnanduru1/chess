@@ -1,12 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 public class ChessPanel extends JPanel{
+   //board's labels and pieces
+   JLabel[][] labels;
+   Piece[][] board;
+   //Contains locations of tiles turned yellow
+   ArrayList<Location> resets;
+   Location oldPiece;
    public ChessPanel(){  
       //8x8 chessboard grid
+      resets = new ArrayList<Location>();
       setLayout(new GridLayout(8,8));  
          
       //Draw chessboard 
-      JLabel[][] labels = new JLabel[8][8];
+      labels = new JLabel[8][8];
       Color back;
            
       for(int i=0; i<8; i++){
@@ -26,7 +35,7 @@ public class ChessPanel extends JPanel{
       
       //Instantiate Piece array, board[][]
       //Array is [x][y], with [0][0] at bottom left and [7][7] at top right      
-      Piece[][] board = new Piece[8][8];
+      board = new Piece[8][8];
       char c = 'W';
       int temp = 1;
       for(int i=0; i<=7; i+=7){      
@@ -64,5 +73,81 @@ public class ChessPanel extends JPanel{
       }
       revalidate();
       repaint();
+      addMouseListener(new myMouseListener());
+   }
+   class myMouseListener implements MouseListener{
+      public void mouseClicked(MouseEvent e){
+         //Location of pointer when clicked
+         PointerInfo a = MouseInfo.getPointerInfo();
+         Point b = a.getLocation();
+         int x = (int)(b.getX()-110)/100;
+         int y = 7-(int)(b.getY()-150)/100;
+         boolean exit = false;
+         
+         //Moving piece
+         //Otherwise resetting yellow to brown
+         for(Location l: resets){
+            //Replace empty space/captured piece with null
+            //Update board with piece's new position
+            if(l.equals(new Location(x, y))){  
+               board[x][y] = board[oldPiece.x][oldPiece.y];          
+               board[oldPiece.x][oldPiece.y] = null;              
+               
+               //Update x and y positions of this piece
+               if(board[x][y]!= null){
+                  board[x][y].x = x;
+                  board[x][y].y = y;
+               }   
+               swap(7-y,x,7-oldPiece.y,oldPiece.x);  
+
+               exit = true;
+            }               
+            //Reset tiles
+            if(((7-l.x)+(7-l.y))%2==1)
+               labels[7-l.y][l.x].setBackground(new Color(255,228,196));
+            else
+               labels[7-l.y][l.x].setBackground(new Color(139,69,19));            
+         }
+         //Empty the "resets" array
+         resets = new ArrayList<Location>();
+         
+         //Stop method if piece is being moved to another location
+         if(exit)
+            return;
+         
+         ArrayList<Location> array = board[x][y].moves(board);         
+         System.out.println(board[x][y].type());
+         for(Location l: array){
+            System.out.println(l.x+","+l.y);
+            resets.add(l);
+            JLabel n = labels[7-l.y][l.x];
+            Color r = n.getBackground();
+            if(r.getRed()==255)
+               n.setBackground(new Color(255, 255, 40));
+            else            
+               n.setBackground(new Color(170, 130, 8));
+         }         
+         //Save location of piece clicked for the next call of MouseClicked
+         oldPiece = new Location(x,y);
+      }
+      private void swap(int x1, int y1, int x2, int y2){        
+         Color color1 = labels[x1][y1].getForeground();
+         Color color2 = labels[x2][y2].getForeground();
+         
+         labels[x1][y1].setText(labels[x2][y2].getText());
+         labels[x2][y2].setText("");
+         
+         labels[x1][y1].setHorizontalAlignment(SwingConstants.CENTER);
+         labels[x1][y1].setFont(new Font(labels[x1][y1].getFont().getName(), Font.PLAIN, 90));
+         labels[x1][y1].setForeground(color2);
+         
+         labels[x2][y2].setHorizontalAlignment(SwingConstants.CENTER);
+         labels[x2][y2].setFont(new Font(labels[x2][y2].getFont().getName(), Font.PLAIN, 90));
+         labels[x2][y2].setForeground(color1);
+      }
+      public void mouseExited(MouseEvent e){}
+      public void mouseEntered(MouseEvent e){}
+      public void mouseReleased(MouseEvent e){}
+      public void mousePressed(MouseEvent e){}
    }
 }

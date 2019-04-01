@@ -8,4 +8,7 @@ public class Location{
    public String toString(){
       return x+", "+y;
    }   
+   public boolean equals(Location c){
+      return (c.x == x && c.y == y);
+   }
 }

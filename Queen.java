@@ -1,6 +1,7 @@
 import javax.swing.JLabel;
 import java.util.ArrayList;
 public class Queen extends Piece{
+   public String type = "Queen";
    public Queen(int a, int b, char c){
       super(a,b,c);
    }

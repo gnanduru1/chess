@@ -1,11 +1,16 @@
 import javax.swing.JLabel;
 import java.util.ArrayList;
 public class Pawn extends Piece{
+   public String type(){
+      return "Pawn";
+   }
    public Pawn(int a, int b, char c){   
       super(a,b,c);
    }
    public ArrayList<Location> moves(Piece[][] p){
       ArrayList<Location> ret = new ArrayList<Location>();
+      if (p == null)
+         return ret;
       if(color=='W'){
          if(x!=0){
             if(p[x-1][y+1]!=null){

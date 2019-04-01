@@ -3,10 +3,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 public class ChessPanel extends JPanel{
+   //Whose turn it is
+   char turn = 'W';
    //board's labels and pieces
    JLabel[][] labels;
    Piece[][] board;
-   //Contains locations of tiles turned yellow
+   //Contains locations of highlighted tiles (to be reset)
    ArrayList<Location> resets;
    Location oldPiece;
    public ChessPanel(){  
@@ -42,11 +44,11 @@ public class ChessPanel extends JPanel{
          board[0][i] = new Rook(0,i,c);
          board[7][i] = new Rook(7,i,c);
          
-         board[1][i] = new Bishop(1,i,c);
-         board[6][i] = new Bishop(6,i,c);
+         board[1][i] = new Knight(1,i,c);
+         board[6][i] = new Knight(6,i,c);
          
-         board[2][i] = new Knight(2,i,c);
-         board[5][i] = new Knight(5,i,c);
+         board[2][i] = new Bishop(2,i,c);
+         board[5][i] = new Bishop(5,i,c);
          
          board[4][i] = new King(3,i,c);
          board[3][i] = new Queen(4,i,c);
@@ -82,14 +84,17 @@ public class ChessPanel extends JPanel{
          Point b = a.getLocation();
          int x = (int)(b.getX()-110)/100;
          int y = 7-(int)(b.getY()-150)/100;
-         boolean exit = false;
+         boolean exit = false;      
          
-         //Moving piece
-         //Otherwise resetting yellow to brown
-         for(Location l: resets){
-            //Replace empty space/captured piece with null
-            //Update board with piece's new position
-            if(l.equals(new Location(x, y))){  
+         //Reset highlighted tiles to normal colors
+         for(Location l: resets){   
+            //Move piece         
+            if(l.equals(new Location(x, y))){ 
+               //Change turn
+               if(turn=='W') turn='B';
+               else turn='W';
+               //Replace empty space/captured piece with null
+               //Update board with piece's new position
                board[x][y] = board[oldPiece.x][oldPiece.y];          
                board[oldPiece.x][oldPiece.y] = null;              
                
@@ -99,7 +104,19 @@ public class ChessPanel extends JPanel{
                   board[x][y].y = y;
                }   
                swap(7-y,x,7-oldPiece.y,oldPiece.x);  
-
+               
+               //Pawn promotion
+               if(board[x][y].type()=="Pawn"){
+                  if((board[x][y].color == 'W' && y==7)||(board[x][y].color == 'B' && y==0)){
+                     board[x][y] = new Queen(x,y,board[x][y].color);
+                     labels[7-y][x].setText(board[x][y].getIcon().getText());
+                     //labels[x][y].setHorizontalAlignment(SwingConstants.CENTER);                  
+                     //labels[7-y][x].setFont(new Font(labels[7-y][x].getFont().getName(), Font.PLAIN, 90));
+                     //if(board[x][y].color=='W')
+                     //   labels[7-y][x].setForeground(Color.WHITE);
+                  }
+               }
+                  
                exit = true;
             }               
             //Reset tiles
@@ -111,14 +128,17 @@ public class ChessPanel extends JPanel{
          //Empty the "resets" array
          resets = new ArrayList<Location>();
          
-         //Stop method if piece is being moved to another location
+         //Stop method if a piece was moved
          if(exit)
             return;
-         
+         //Stop if tile clicked is empty
+         if(board[x][y]==null)
+            return;
+         //Stop if piece clicked is not being played on this turn
+         if(board[x][y].color!=turn)
+            return; 
          ArrayList<Location> array = board[x][y].moves(board);         
-         System.out.println(board[x][y].type());
          for(Location l: array){
-            System.out.println(l.x+","+l.y);
             resets.add(l);
             JLabel n = labels[7-l.y][l.x];
             Color r = n.getBackground();

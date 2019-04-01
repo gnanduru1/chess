@@ -2,8 +2,11 @@ import javax.swing.JLabel;
 import java.util.ArrayList;
 public class King extends Piece{
    public String type = "King";
+   public int x0, y0;
    public King(int a, int b, char c){
       super(a,b,c);
+      x0 = a;
+      y0 = b;
    }
    public ArrayList<Location> moves(Piece[][] p){
       ArrayList<Location> ret = new ArrayList<Location>();

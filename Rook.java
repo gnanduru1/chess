@@ -1,7 +1,9 @@
 import javax.swing.JLabel;
 import java.util.ArrayList;
 public class Rook extends Piece{
-   public String type = "Rook";
+   public String type(){
+   return "Rook";
+   }
    public Rook(int a, int b, char c){
       super(a,b,c);
    }

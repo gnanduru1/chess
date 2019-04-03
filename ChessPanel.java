@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 public class ChessPanel extends JPanel{
+   //Keep track of Kings
+   King wKing, bKing;
    //Whose turn it is
    char turn = 'W';
    //board's labels and pieces
@@ -45,20 +47,21 @@ public class ChessPanel extends JPanel{
          board[7][i] = new Rook(7,i,c);
          
          board[1][i] = new Knight(1,i,c);
-         board[6][i] = new Knight(6,i,c);
+         //board[6][i] = new Knight(6,i,c);
          
          board[2][i] = new Bishop(2,i,c);
-         board[5][i] = new Bishop(5,i,c);
-         
-         board[4][i] = new King(3,i,c);
-         board[3][i] = new Queen(4,i,c);
+         //board[5][i] = new Bishop(5,i,c);
+
+         board[4][i] = new King(4,i,c);
+         board[3][i] = new Queen(3,i,c);
          
          for(int j=0; j<8; j++)
             board[j][i+temp] = new Pawn(j,i+temp,c);
          c = 'B';
          temp = -1;
       }
-      
+      wKing = (King)board[4][0];
+      bKing = (King)board[4][7];
       //Update labels[][] text to Unicode values of board[][]
       for(int i=0; i<8; i++){
          for(int j=0; j<8; j++){
@@ -116,7 +119,25 @@ public class ChessPanel extends JPanel{
                      //   labels[7-y][x].setForeground(Color.WHITE);
                   }
                }
-                  
+               else if(board[x][y].type()=="King"){
+                  if(board[x][y].color == 'W')
+                     wKing = (King)board[x][y];
+                  else
+                     bKing = (King)board[x][y];
+                     
+                  if(Math.abs(oldPiece.x-x)>1){
+                     if((oldPiece.x-x)>0){
+                        swap(7-y,3,7-y,0);
+                        board[3][y] = board[0][y];
+                        board[0][y] = null;
+                     }
+                     else{
+                        swap(7-y,5,7-y,7);
+                        board[5][y] = board[7][y];
+                        board[7][y] = null;                        
+                     }                        
+                  }
+               }
                exit = true;
             }               
             //Reset tiles

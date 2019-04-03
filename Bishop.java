@@ -13,8 +13,10 @@ public class Bishop extends Piece{
             break;
          if(p[x+i][y+i]==null)
             ret.add(new Location(x+i,y+i));
-         else if(p[x+i][y+i].color!=color)
+         else if(p[x+i][y+i].color!=color){
             ret.add(new Location(x+i,y+i));
+            break;
+         }
          else
             break;
       } 
@@ -23,8 +25,10 @@ public class Bishop extends Piece{
             break;
          if(p[x+i][y-i]==null)
             ret.add(new Location(x+i,y-i));
-         else if(p[x+i][y-i].color!=color)
+         else if(p[x+i][y-i].color!=color){
             ret.add(new Location(x+i,y-i));
+            break;
+         }
          else
             break;
       }
@@ -33,8 +37,10 @@ public class Bishop extends Piece{
             break;
          if(p[x-i][y-i]==null)
             ret.add(new Location(x-i,y-i));
-         else if(p[x-i][y-i].color!=color)
+         else if(p[x-i][y-i].color!=color){
             ret.add(new Location(x-i,y-i));
+            break;
+         }
          else
             break;
       }
@@ -43,8 +49,10 @@ public class Bishop extends Piece{
             break;
          if(p[x-i][y+i]==null)
             ret.add(new Location(x-i,y+i));
-         else if(p[x-i][y+i].color!=color)
+         else if(p[x-i][y+i].color!=color){
             ret.add(new Location(x-i,y+i));
+            break;
+         }
          else
             break;
       }    

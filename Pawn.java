@@ -1,6 +1,6 @@
 import javax.swing.JLabel;
 import java.util.ArrayList;
-public class Pawn extends Piece{
+public class Pawn extends Piece{   
    public String type(){
       return "Pawn";
    }

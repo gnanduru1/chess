@@ -16,26 +16,34 @@ public class Rook extends Piece{
             break;
          if(p[x+i][y]==null)
             ret.add(new Location(x+i,y));
-         else if(p[x+i][y].color!=color)
+         else if(p[x+i][y].color!=color){
             ret.add(new Location(x+i,y));
-         break;
+            break;
+         }
+         else
+            break;
       } 
       for(int i=1;i<8;i++){
          if(y-i<0)
             break;
          if(p[x][y-i]==null)
             ret.add(new Location(x,y-i));
-         else if(p[x][y-i].color!=color)
+         else if(p[x][y-i].color!=color){
             ret.add(new Location(x,y-i));
-         break;
+            break;
+         }
+         else
+            break;
       }
       for(int i=1;i<8;i++){
          if(x-i<0)
             break;
          if(p[x-i][y]==null)
             ret.add(new Location(x-i,y));
-         else if(p[x-i][y].color!=color)
+         else if(p[x-i][y].color!=color){
             ret.add(new Location(x-i,y));
+            break;
+         }
          else
             break;
       }
@@ -44,8 +52,10 @@ public class Rook extends Piece{
             break;
          if(p[x][y+i]==null)
             ret.add(new Location(x,y+i));
-         else if(p[x][y+i].color!=color)
+         else if(p[x][y+i].color!=color){
             ret.add(new Location(x,y+i));
+            break;
+         }
          else
             break;
       }

@@ -12,12 +12,14 @@ public class ChessPanel extends JPanel{
    Piece[][] board;
    //Contains locations of highlighted tiles (to be reset)
    ArrayList<Location> resets;
+   Location check;
    Location oldPiece;
-   public ChessPanel(){  
+   public ChessPanel(){        
       //8x8 chessboard grid
       resets = new ArrayList<Location>();
+      check = new Location(-1,-1);
       setLayout(new GridLayout(8,8));  
-         
+      
       //Draw chessboard 
       labels = new JLabel[8][8];
       Color back;
@@ -25,7 +27,7 @@ public class ChessPanel extends JPanel{
       for(int i=0; i<8; i++){
          for(int j=0; j<8; j++){
             if((i%2==0&&j%2==0)||(i%2==1&&j%2==1))
-               back = new Color(255,228,196);                              
+               back = new Color(233,203,196);                              
             else
                back = new Color(139,69,19);
             labels[i][j] = new JLabel();
@@ -47,10 +49,10 @@ public class ChessPanel extends JPanel{
          board[7][i] = new Rook(7,i,c);
          
          board[1][i] = new Knight(1,i,c);
-         //board[6][i] = new Knight(6,i,c);
+         board[6][i] = new Knight(6,i,c);
          
          board[2][i] = new Bishop(2,i,c);
-         //board[5][i] = new Bishop(5,i,c);
+         board[5][i] = new Bishop(5,i,c);
 
          board[4][i] = new King(4,i,c);
          board[3][i] = new Queen(3,i,c);
@@ -142,7 +144,7 @@ public class ChessPanel extends JPanel{
             }               
             //Reset tiles
             if(((7-l.x)+(7-l.y))%2==1)
-               labels[7-l.y][l.x].setBackground(new Color(255,228,196));
+               labels[7-l.y][l.x].setBackground(new Color(233,203,196));
             else
                labels[7-l.y][l.x].setBackground(new Color(139,69,19));            
          }
@@ -163,8 +165,8 @@ public class ChessPanel extends JPanel{
             resets.add(l);
             JLabel n = labels[7-l.y][l.x];
             Color r = n.getBackground();
-            if(r.getRed()==255)
-               n.setBackground(new Color(255, 255, 40));
+            if(r.getRed()==233)
+               n.setBackground(new Color(223, 213, 130));
             else            
                n.setBackground(new Color(170, 130, 8));
          }         

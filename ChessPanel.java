@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.lang.Thread;
 public class ChessPanel extends JPanel{
    //Keep track of Kings
    King wKing, bKing;
@@ -12,14 +13,11 @@ public class ChessPanel extends JPanel{
    Piece[][] board;
    //Contains locations of highlighted tiles (to be reset)
    ArrayList<Location> resets;
-   Location check;
    Location oldPiece;
-   public ChessPanel(){        
+   public ChessPanel(){
       //8x8 chessboard grid
       resets = new ArrayList<Location>();
-      check = new Location(-1,-1);
-      setLayout(new GridLayout(8,8));  
-      
+      setLayout(new GridLayout(8,8)); 
       //Draw chessboard 
       labels = new JLabel[8][8];
       Color back;
@@ -93,7 +91,14 @@ public class ChessPanel extends JPanel{
          
          //Reset highlighted tiles to normal colors
          for(Location l: resets){   
-            //Move piece         
+            //Move piece
+            if(labels[7-l.y][l.x].getBackground().getRed() == 255){
+               if(((7-l.x)+(7-l.y))%2==1)
+                  labels[7-l.y][l.x].setBackground(new Color(233,203,196));
+               else
+                  labels[7-l.y][l.x].setBackground(new Color(139,69,19));
+               continue;
+            }         
             if(l.equals(new Location(x, y))){ 
                //Change turn
                if(turn=='W') turn='B';
@@ -126,7 +131,7 @@ public class ChessPanel extends JPanel{
                      wKing = (King)board[x][y];
                   else
                      bKing = (King)board[x][y];
-                     
+                  //Switching Rook label during castling
                   if(Math.abs(oldPiece.x-x)>1){
                      if((oldPiece.x-x)>0){
                         swap(7-y,3,7-y,0);
@@ -140,6 +145,7 @@ public class ChessPanel extends JPanel{
                      }                        
                   }
                }
+               //Do not highlight (yellow) any tiles
                exit = true;
             }               
             //Reset tiles
@@ -151,6 +157,36 @@ public class ChessPanel extends JPanel{
          //Empty the "resets" array
          resets = new ArrayList<Location>();
          
+         //Is the enemy King in check?
+         if(board[x][y]!=null){
+            char eCurr;
+            King kCurr;
+            if(board[x][y].color=='W'){
+               eCurr = 'W';
+               kCurr = bKing;
+            }
+            else{
+               eCurr = 'B';
+               kCurr = wKing;
+            }
+            for(int i=0; i<8; i++){
+               for(int j=0; j<8; j++){
+                  if(board[i][j]!=null){
+                     //If the piece is an enemy of the King, check if its moveset contains the King's position                        
+                     if(board[i][j].color == eCurr){                        
+                        for(Location tempLoc : board[i][j].moves(board)){
+                           //If it does, make King's tile red
+                           if(tempLoc.equals(new Location(kCurr.x, kCurr.y))){
+                              labels[7-kCurr.y][kCurr.x].setBackground(new Color(255,0,0));
+                              resets.add(new Location(kCurr.x,kCurr.y));
+                              break;
+                           }                              
+                        }
+                     }  
+                  }
+               }
+            }
+         }
          //Stop method if a piece was moved
          if(exit)
             return;
@@ -160,6 +196,7 @@ public class ChessPanel extends JPanel{
          //Stop if piece clicked is not being played on this turn
          if(board[x][y].color!=turn)
             return; 
+         //To do: If the playing side's King is in check, only allow moves that protect the King
          ArrayList<Location> array = board[x][y].moves(board);         
          for(Location l: array){
             resets.add(l);

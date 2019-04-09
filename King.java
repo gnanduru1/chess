@@ -4,7 +4,6 @@ import java.util.HashSet;
 public class King extends Piece{
    public String type = "King";
    public int x0, y0;
-   Piece[][] allSameColor;
    public King(int a, int b, char c){
       super(a,b,c);
       x0 = a;
@@ -12,12 +11,6 @@ public class King extends Piece{
       char boardColor = 'W';
       if(c=='B')
          boardColor = 'B';
-      allSameColor = new Piece[8][8];
-      for(int loop1=0; loop1<8; loop1++){
-         for(int loop2=0; loop2<8; loop2++){
-            allSameColor[loop1][loop2] = new Rook(loop1,loop2,boardColor);
-         }
-      }
    }
    public String type(){
       return "King";
@@ -57,12 +50,11 @@ public class King extends Piece{
          for(int u=0; u<8; u++){            
             if(p[t][u]!=null){
                if(p[t][u].color!=color&&!(p[t][u].type().equals("King"))){                 
-                  //if(!p[t][u].type().equals("Pawn")){
-                  allSameColor[t][u] = p[t][u];
-                     for(Location l: p[t][u].moves(allSameColor))                  
+                  if(!p[t][u].type().equals("Pawn")){
+                     for(Location l: p[t][u].moves(p))                  
                         enemy.add(l);                
-                  //}
-                  /*else{
+                  }
+                  else{
                      int dy = 1;
                      if(p[t][u].color == 'B')
                         dy = -1;
@@ -73,9 +65,8 @@ public class King extends Piece{
                      if(t<7){
                         if(p[t+1][u+dy]==null)
                            enemy.add(new Location(t+1,u+dy));
-                     }                     
-                     
-                  }*/
+                     }
+                  }
                }
             }
          }
